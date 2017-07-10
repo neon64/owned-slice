@@ -7,6 +7,34 @@
 //! you can just implement `Index` and `IndexMut` and then you receive a
 //! slicing implementation for free.
 //!
+//! # Using `TakeSlice`
+//! 
+//! ```
+//! use std::collections::VecDeque;
+//! use owned_slice::TakeSlice;
+//!
+//! let mut inner = VecDeque::new();
+//! inner.push_back("foo");
+//! inner.push_back("bar");
+//! inner.push_back("baz");
+//!
+//! // Accessors
+//! assert_eq!(inner.index_range(0..1)[0], "foo");
+//! assert_eq!(inner.index_range(0..2)[1], "bar");
+//! assert_eq!(inner.index_range_from(1..)[0], "bar");
+//! assert_eq!(inner.index_range_to(..3)[2], "baz");
+//! 
+//! // Mutators
+//! assert_eq!(inner.index_range(1..3)[0], "bar");
+//! inner.index_range_mut(1..3)[0] = "qux";
+//! assert_eq!(inner.index_range(1..3)[0], "qux");
+//! 
+//! // Iterators too!
+//! for msg in inner.index_range(1..3).iter() {
+//!     println!("{}", msg);
+//! }
+//! ``` 
+//!
 //! # Implementing `TakeSlice` for your own types
 //!
 //! ```
@@ -55,8 +83,6 @@
 //! // remember that our custom struct adds `1` onto every index
 //! assert_eq!(custom.index_range_to(..2)[1], "baz");
 //!
-//!
-//!
 //! ```
 //!
 
@@ -88,7 +114,7 @@ impl<T: Add<Self, Output=Self>
       + Zero + One + Eq + Ord
       + Debug + Copy> Idx for T {}
 
-// Immutable Version
+/// Represents an immutable slice into another data structure, like &[T].
 #[derive(Copy, Clone, Debug)]
 pub struct Slice<'a, K: 'a + Index<I, Output = T>, I: 'a + Idx, T: 'a> {
     list: &'a K,
@@ -130,7 +156,7 @@ impl<'a, K, I, T> Index<I> for Slice<'a, K, I, T>
     }
 }
 
-// Mutable Version
+/// Represents an immutable slice into another data structure, like &mut [T].
 pub struct SliceMut<'a, K: 'a + IndexMut<I, Output = T>, I: 'a + Idx, T: 'a> {
     list: &'a mut K,
     start: I,

@@ -15,6 +15,7 @@ impl<'a, K, I, T> IntoIterator for Slice<'a, K, I, T>
     }
 }
 
+/// The iterator for an immutable slice.
 pub struct Iter<'a, K: 'a + Index<I, Output = T>, I: 'a + Idx, T: 'a> {
     list: &'a K,
     cur: I,
@@ -54,8 +55,6 @@ impl<'a, K, I, T> Iterator for Iter<'a, K, I, T>
     }
 }
 
-// Mutable Version
-
 impl<'a, K, I, T> IntoIterator for SliceMut<'a, K, I, T>
     where K: IndexMut<I, Output = T>,
           I: Idx
@@ -67,6 +66,7 @@ impl<'a, K, I, T> IntoIterator for SliceMut<'a, K, I, T>
     }
 }
 
+/// The iterator for a mutable slice.
 pub struct IterMut<'a, K: 'a + IndexMut<I, Output = T>, I: 'a + Idx, T: 'a> {
     list: &'a mut K,
     cur: I,
