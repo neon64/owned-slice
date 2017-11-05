@@ -86,7 +86,7 @@
 //! ```
 //!
 
-extern crate num;
+extern crate num_traits;
 
 mod iter;
 mod util;
@@ -96,7 +96,7 @@ use std::ops::{Add, Sub, Range, RangeTo, RangeFrom, Index, IndexMut};
 use std::cmp::{Eq, Ord};
 use std::fmt::Debug;
 use std::marker;
-use num::{Zero, One};
+use num_traits::{Zero, One};
 
 pub use iter::{Iter, IterMut};
 use util::{unlikely, assert_in_bounds};
