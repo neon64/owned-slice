@@ -1,7 +1,7 @@
 use std::ops::{Index, IndexMut};
 use std::fmt::Debug;
 use std::marker;
-use num::One;
+use num_traits::One;
 use super::{Idx, Slice, SliceMut};
 
 impl<'a, K, I, T> IntoIterator for Slice<'a, K, I, T>
